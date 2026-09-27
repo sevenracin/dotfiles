@@ -1,0 +1,88 @@
+{
+  "default_outbound": "proxy",
+  "kind": "throne-route-profile",
+  "name": "Routing",
+  "rules": [
+    {
+      "action": "route",
+      "inbound": [
+        "tun-in"
+      ],
+      "ip_cidr": [
+        "100.64.0.0/10",
+        "fd7a:115c:a1e0::/48"
+      ],
+      "name": "Tailscalle",
+      "outbound": "Tailscale",
+      "type": "custom"
+    },
+    {
+      "action": "hijack-dns",
+      "name": "dns-hijack",
+      "protocol": "dns",
+      "type": "custom"
+    },
+    {
+      "action": "route",
+      "domain": [
+        "assettolab.ru"
+      ],
+      "name": "Simple Address Proxy",
+      "outbound": "proxy",
+      "type": "simple_address_proxy"
+    },
+    {
+      "action": "route",
+      "domain_suffix": [
+        "ts.net",
+        ".ru",
+        ".su",
+        ".рф"
+      ],
+      "ip_cidr": [
+        "10.0.0.0/8",
+        "172.16.0.0/12",
+        "192.168.0.0/16",
+        "127.0.0.0/8",
+        "::1/128",
+        "100.64.0.0/10",
+        "fd7a:115c:a1e0::/48"
+      ],
+      "name": "Simple Address Bypass",
+      "outbound": "direct",
+      "rule_set": [
+        "geoip-ru"
+      ],
+      "type": "simple_address_bypass"
+    },
+    {
+      "action": "route",
+      "name": "Simple Process Name Bypass",
+      "outbound": "direct",
+      "process_name": [
+        "java.exe",
+        "javaw.exe"
+      ],
+      "type": "simple_process_name_bypass"
+    },
+    {
+      "action": "route",
+      "name": "Simple Process Name Proxy",
+      "outbound": "proxy",
+      "process_name": [
+        "steamwebhelper.exe"
+      ],
+      "type": "simple_process_name_proxy"
+    },
+    {
+      "action": "route",
+      "name": "Process Path Regex",
+      "outbound": "direct",
+      "process_path_regex": [
+        "(?i)^(?:C:\\\\Program Files(?: \\(x86\\))?\\\\Steam|C:\\\\Program Files\\\\(?:Rockstar Games|Epic Games))(?:\\\\|$)"
+      ],
+      "type": "custom"
+    }
+  ],
+  "v": 1
+}
