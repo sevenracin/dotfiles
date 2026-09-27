@@ -32,6 +32,14 @@
       "type": "simple_address_proxy"
     },
     {
+      "action": "reject",
+      "name": "Advertising block",
+      "rule_set": [
+        "geosite-category-ads-all"
+      ],
+      "type": "simple_address_block"
+    },
+    {
       "action": "route",
       "domain_suffix": [
         "ts.net",
@@ -63,6 +71,17 @@
         "geoip-ru"
       ],
       "type": "simple_address_bypass"
+    },
+    {
+      "action": "route",
+      "name": "Tailscale processes direct",
+      "outbound": "direct",
+      "process_name": [
+        "tailscale.exe",
+        "tailscaled.exe",
+        "tailscale-ipn.exe"
+      ],
+      "type": "simple_process_name_bypass"
     },
     {
       "action": "route",
