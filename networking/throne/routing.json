@@ -12,22 +12,22 @@
         "100.64.0.0/10",
         "fd7a:115c:a1e0::/48"
       ],
-      "name": "Tailscalle",
+      "name": "Tailscale",
       "outbound": "Tailscale",
       "type": "custom"
     },
     {
       "action": "hijack-dns",
-      "name": "dns-hijack",
+      "name": "DNS hijack",
       "protocol": "dns",
       "type": "custom"
     },
     {
       "action": "route",
-      "domain": [
+      "domain_suffix": [
         "assettolab.ru"
       ],
-      "name": "Simple Address Proxy",
+      "name": "Proxy exceptions",
       "outbound": "proxy",
       "type": "simple_address_proxy"
     },
@@ -35,20 +35,29 @@
       "action": "route",
       "domain_suffix": [
         "ts.net",
+        "tailscale.com",
+        "tailscale.net",
+        ".local",
         ".ru",
         ".su",
-        ".рф"
+        ".xn--p1ai",
+        "funpay.com"
       ],
       "ip_cidr": [
         "10.0.0.0/8",
         "172.16.0.0/12",
         "192.168.0.0/16",
         "127.0.0.0/8",
+        "169.254.0.0/16",
+        "224.0.0.0/4",
         "::1/128",
+        "fc00::/7",
+        "fe80::/10",
+        "ff00::/8",
         "100.64.0.0/10",
         "fd7a:115c:a1e0::/48"
       ],
-      "name": "Simple Address Bypass",
+      "name": "Local and Russian direct",
       "outbound": "direct",
       "rule_set": [
         "geoip-ru"
@@ -57,7 +66,7 @@
     },
     {
       "action": "route",
-      "name": "Simple Process Name Bypass",
+      "name": "Java direct",
       "outbound": "direct",
       "process_name": [
         "java.exe",
@@ -67,7 +76,7 @@
     },
     {
       "action": "route",
-      "name": "Simple Process Name Proxy",
+      "name": "Steam WebHelper proxy",
       "outbound": "proxy",
       "process_name": [
         "steamwebhelper.exe"
@@ -76,10 +85,10 @@
     },
     {
       "action": "route",
-      "name": "Process Path Regex",
+      "name": "Game platforms direct",
       "outbound": "direct",
       "process_path_regex": [
-        "(?i)^(?:C:\\\\Program Files(?: \\(x86\\))?\\\\Steam|C:\\\\Program Files\\\\(?:Rockstar Games|Epic Games))(?:\\\\|$)"
+        "(?i)^[A-Z]:\\\\(?:.*\\\\)?(?:SteamLibrary|Steam|Rockstar Games|Epic Games)(?:\\\\|$)"
       ],
       "type": "custom"
     }
