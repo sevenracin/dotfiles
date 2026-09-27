@@ -41,6 +41,72 @@
     },
     {
       "action": "route",
+      "name": "Steam WebHelper proxy",
+      "outbound": "proxy",
+      "process_name": [
+        "steamwebhelper.exe"
+      ],
+      "type": "simple_process_name_proxy"
+    },
+    {
+      "action": "route",
+      "name": "Tailscale processes direct",
+      "outbound": "direct",
+      "process_name": [
+        "tailscale.exe",
+        "tailscaled.exe",
+        "tailscale-ipn.exe"
+      ],
+      "type": "simple_process_name_bypass"
+    },
+    {
+      "action": "route",
+      "name": "Java direct",
+      "outbound": "direct",
+      "process_name": [
+        "java.exe",
+        "javaw.exe"
+      ],
+      "type": "simple_process_name_bypass"
+    },
+    {
+      "action": "route",
+      "name": "Game platforms direct",
+      "outbound": "direct",
+      "process_path_regex": [
+        "(?i)^[A-Z]:\\\\(?:.*\\\\)?(?:SteamLibrary|Steam|Rockstar Games|Epic Games)(?:\\\\|$)"
+      ],
+      "type": "custom"
+    },
+    {
+      "action": "route",
+      "name": "Google AI proxy",
+      "outbound": "proxy",
+      "rule_set": [
+        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-google-deepmind.srs"
+      ],
+      "type": "simple_address_proxy"
+    },
+    {
+      "action": "route",
+      "name": "YouTube proxy",
+      "outbound": "proxy",
+      "rule_set": [
+        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-youtube.srs"
+      ],
+      "type": "simple_address_proxy"
+    },
+    {
+      "action": "route",
+      "name": "Google direct",
+      "outbound": "direct",
+      "rule_set": [
+        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-google.srs"
+      ],
+      "type": "simple_address_bypass"
+    },
+    {
+      "action": "route",
       "domain_suffix": [
         "ts.net",
         "tailscale.com",
@@ -71,45 +137,6 @@
         "geoip-ru"
       ],
       "type": "simple_address_bypass"
-    },
-    {
-      "action": "route",
-      "name": "Tailscale processes direct",
-      "outbound": "direct",
-      "process_name": [
-        "tailscale.exe",
-        "tailscaled.exe",
-        "tailscale-ipn.exe"
-      ],
-      "type": "simple_process_name_bypass"
-    },
-    {
-      "action": "route",
-      "name": "Java direct",
-      "outbound": "direct",
-      "process_name": [
-        "java.exe",
-        "javaw.exe"
-      ],
-      "type": "simple_process_name_bypass"
-    },
-    {
-      "action": "route",
-      "name": "Steam WebHelper proxy",
-      "outbound": "proxy",
-      "process_name": [
-        "steamwebhelper.exe"
-      ],
-      "type": "simple_process_name_proxy"
-    },
-    {
-      "action": "route",
-      "name": "Game platforms direct",
-      "outbound": "direct",
-      "process_path_regex": [
-        "(?i)^[A-Z]:\\\\(?:.*\\\\)?(?:SteamLibrary|Steam|Rockstar Games|Epic Games)(?:\\\\|$)"
-      ],
-      "type": "custom"
     }
   ],
   "v": 1
