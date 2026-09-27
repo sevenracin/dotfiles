@@ -80,10 +80,15 @@
     },
     {
       "action": "route",
-      "name": "Google AI proxy",
+      "name": "AI services proxy",
       "outbound": "proxy",
       "rule_set": [
-        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-google-deepmind.srs"
+        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-openai.srs",
+        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-anthropic.srs",
+        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-perplexity.srs",
+        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-xai.srs",
+        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-google-deepmind.srs",
+        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-github-copilot.srs"
       ],
       "type": "simple_address_proxy"
     },
@@ -98,10 +103,40 @@
     },
     {
       "action": "route",
+      "domain": [
+        "apple-relay.cloudflare.com",
+        "apple-relay.fastly-edge.com",
+        "cp4.cloudflare.com",
+        "apple-relay.apple.com"
+      ],
+      "name": "Apple Intelligence proxy",
+      "outbound": "proxy",
+      "type": "simple_address_proxy"
+    },
+    {
+      "action": "route",
       "name": "Google direct",
       "outbound": "direct",
       "rule_set": [
         "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-google.srs"
+      ],
+      "type": "simple_address_bypass"
+    },
+    {
+      "action": "route",
+      "name": "GitHub direct",
+      "outbound": "direct",
+      "rule_set": [
+        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-github.srs"
+      ],
+      "type": "simple_address_bypass"
+    },
+    {
+      "action": "route",
+      "name": "Apple direct",
+      "outbound": "direct",
+      "rule_set": [
+        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-apple.srs"
       ],
       "type": "simple_address_bypass"
     },
@@ -134,7 +169,8 @@
       "name": "Local and Russian direct",
       "outbound": "direct",
       "rule_set": [
-        "geoip-ru"
+        "geoip-ru",
+        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs"
       ],
       "type": "simple_address_bypass"
     }
