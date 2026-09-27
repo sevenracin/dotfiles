@@ -2,12 +2,11 @@
 
 Personal configuration files.
 
-## Shadowrocket
+## Networking
 
-The public Shadowrocket configuration is stored in [`shadowrocket/shadowrocket.conf`](shadowrocket/shadowrocket.conf).
+Network and proxy client configuration is stored under [`networking/`](networking/).
 
-Import/update URL:
+- [`networking/shadowrocket/`](networking/shadowrocket/) — Shadowrocket remote configuration.
+- [`networking/throne/`](networking/throne/) — Throne remote routing profile.
 
-https://raw.githubusercontent.com/sevenracin/dotfiles/main/shadowrocket/shadowrocket.conf
-
-Private credentials and certificate material must stay local and are not stored in this repository.
+Private credentials, subscription URLs, certificate material, private keys, and other secrets must stay local and are not stored in this repository.
