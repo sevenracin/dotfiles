@@ -1,0 +1,9 @@
+# Shadowrocket local/private material
+shadowrocket/local.*
+shadowrocket/private.*
+shadowrocket/*.p12
+shadowrocket/*.pfx
+shadowrocket/*.pem
+shadowrocket/*.key
+shadowrocket/*secret*
+shadowrocket/*subscription*
