@@ -5,14 +5,19 @@
   "rules": [
     {
       "action": "route",
+      "domain_suffix": [
+        "ts.net"
+      ],
       "inbound": [
         "tun-in"
       ],
       "ip_cidr": [
         "100.64.0.0/10",
-        "fd7a:115c:a1e0::/48"
+        "100.100.100.100/32",
+        "fd7a:115c:a1e0::/48",
+        "fd7a:115c:a1e0::53/128"
       ],
-      "name": "Tailscale",
+      "name": "Tailscale and MagicDNS",
       "outbound": "Tailscale",
       "type": "custom"
     },
@@ -123,7 +128,6 @@
     {
       "action": "route",
       "domain_suffix": [
-        "ts.net",
         "tailscale.com",
         "tailscale.net",
         ".local",
@@ -142,9 +146,7 @@
         "::1/128",
         "fc00::/7",
         "fe80::/10",
-        "ff00::/8",
-        "100.64.0.0/10",
-        "fd7a:115c:a1e0::/48"
+        "ff00::/8"
       ],
       "name": "Local and Russian direct",
       "outbound": "direct",
