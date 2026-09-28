@@ -80,15 +80,10 @@
     },
     {
       "action": "route",
-      "name": "AI services proxy",
+      "name": "International AI services proxy",
       "outbound": "proxy",
       "rule_set": [
-        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-openai.srs",
-        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-anthropic.srs",
-        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-perplexity.srs",
-        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-xai.srs",
-        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-google-deepmind.srs",
-        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-github-copilot.srs"
+        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ai-!cn.srs"
       ],
       "type": "simple_address_proxy"
     },
@@ -115,28 +110,13 @@
     },
     {
       "action": "route",
-      "name": "Google direct",
+      "name": "Broad native direct categories",
       "outbound": "direct",
       "rule_set": [
-        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-google.srs"
-      ],
-      "type": "simple_address_bypass"
-    },
-    {
-      "action": "route",
-      "name": "GitHub direct",
-      "outbound": "direct",
-      "rule_set": [
-        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-github.srs"
-      ],
-      "type": "simple_address_bypass"
-    },
-    {
-      "action": "route",
-      "name": "Apple direct",
-      "outbound": "direct",
-      "rule_set": [
-        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-apple.srs"
+        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-google.srs",
+        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-apple.srs",
+        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-dev.srs",
+        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-games.srs"
       ],
       "type": "simple_address_bypass"
     },
