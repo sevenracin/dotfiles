@@ -10,22 +10,22 @@ Add this URL to Shadowrocket as a remote configuration. The config contains the 
 
 ## Routing policy
 
-The profile is intentionally **PROXY by default**. Unknown and niche services therefore keep working without maintaining a complete censorship list, while broad high-confidence categories bypass the VPN for native speed.
+The profile is intentionally **proxy by default** for unknown and niche services, but known-safe traffic is routed `DIRECT` for native speed.
+
+Proxied traffic now uses the `FAST-EU` `url-test` group instead of Shadowrocket's plain `PROXY` policy. The group automatically tests nearby EU nodes every 5 minutes and picks the lowest-latency available match with a 20 ms switching tolerance. It currently matches Finland, Estonia, Latvia, Lithuania, Poland, Sweden, Germany, the Netherlands, Czechia, Denmark, and Austria, using country names, common city names, Russian names, and flags. Special nodes labelled `МОСТ`, `ТОРРЕНТ`, or M-number variants are excluded.
+
+All protocols exposed by matching subscription nodes participate. Shadowrocket `url-test` measures request latency/availability rather than sustained download throughput, so the configuration intentionally does not hard-code a preferred protocol. A fast Hysteria2/TUIC/VLESS/etc. node can win naturally if it performs best on the current connection.
 
 Rule order is important:
 
 1. LAN and Tailscale are `DIRECT`.
 2. Advertising is rejected.
-3. Narrow foreign-IP exceptions are `PROXY` before broad direct categories can match them. This includes OpenAI, Gemini, YouTube, GitHub/Microsoft Copilot, `assettolab.ru`, Medium, JetBrains AI/Grazie, the maintained custom proxy list, and Apple Intelligence / Private Cloud Compute endpoints.
-4. Broad maintained Blackmatrix7 sets for Apple, Google, GitHub, Developer tooling, and Games are `DIRECT`.
+3. Narrow exceptions that need a foreign IP use `FAST-EU` before any broad direct category can match them. This includes OpenAI, Gemini, YouTube, GitHub/Microsoft Copilot, Medium, JetBrains AI/Grazie, the maintained custom proxy list, `assettolab.ru`, and Apple Intelligence / Private Cloud Compute endpoints.
+4. Apple, Google, GitHub, Developer, and Game aggregate families are `DIRECT` through maintained Blackmatrix7 rule sets.
 5. `.ru`, `.su`, `.рф`, FunPay, and `GEOIP,RU` are `DIRECT`.
-6. Everything unmatched is `PROXY`.
+6. Everything unmatched uses `FAST-EU`.
 
-The Developer aggregate covers many ecosystems at once, including GitLab, Docker, Python, package/container tooling, JetBrains-related infrastructure, Stack Overflow and other development services. OpenAI and Medium are explicitly caught before this aggregate because they should not use the Russian route.
-
-The Game aggregate covers a large cross-vendor set rather than maintaining individual rules for each publisher/platform.
-
-Generic shared CDN/cloud networks such as Cloudflare, Fastly, Akamai and AWS/CloudFront are deliberately not routed `DIRECT` as whole networks because blocked and niche services share them.
+Generic shared CDN networks such as Cloudflare, Fastly, Akamai, AWS/CloudFront, and similar infrastructure are deliberately not routed `DIRECT` as a whole because blocked and niche services share them.
 
 The config intentionally keeps:
 
