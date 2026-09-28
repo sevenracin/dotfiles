@@ -2,18 +2,18 @@
   "servers": [
     {
       "type": "tailscale",
-      "tag": "tailscale-dns",
+      "tag": "dns-tailscale",
       "endpoint": "route-0",
       "accept_default_resolvers": false,
       "accept_search_domain": true
     },
     {
       "type": "local",
-      "tag": "direct-dns"
+      "tag": "dns-direct"
     },
     {
       "type": "https",
-      "tag": "remote-dns",
+      "tag": "dns-remote",
       "server": "8.8.8.8",
       "path": "/dns-query",
       "detour": "proxy"
@@ -25,14 +25,14 @@
         "ts.net"
       ],
       "action": "route",
-      "server": "tailscale-dns"
+      "server": "dns-tailscale"
     },
     {
       "preferred_by": [
-        "tailscale-dns"
+        "dns-tailscale"
       ],
       "action": "route",
-      "server": "tailscale-dns"
+      "server": "dns-tailscale"
     },
     {
       "domain_suffix": [
@@ -46,8 +46,8 @@
         "funpay.com"
       ],
       "action": "route",
-      "server": "direct-dns"
+      "server": "dns-direct"
     }
   ],
-  "final": "remote-dns"
+  "final": "dns-remote"
 }
