@@ -55,14 +55,16 @@ In **Routing → DNS**:
 3. Paste the contents of `dns.json`.
 4. Save and restart the active profile.
 
-The custom DNS object keeps the existing routing philosophy:
+The custom DNS object is intentionally simple and does not reference Throne rule-set aliases. Raw custom DNS objects are parsed directly by sing-box, so routing-profile aliases such as `geosite-category-ai-!cn` are not resolved there.
 
-- Tailscale MagicDNS and single-label tailnet names use the embedded Tailscale resolver.
-- International AI, YouTube, Apple Intelligence and `assettolab.ru` use Google DoH through `proxy`.
-- Broad DIRECT categories and Russian domains use the local resolver.
-- Everything else uses Google DoH through `proxy`.
+DNS behavior:
 
-The Tailscale DNS server references endpoint tag `route-0`. Throne generates this tag for the first routed auxiliary outbound. The routing profile intentionally keeps `Tailscale` as the first and only custom routed outbound, so `route-0` is stable in the current design. If another named outbound is later added ahead of Tailscale, update the endpoint tag in `dns.json` to match Throne's generated Tailscale endpoint tag.
+- `*.ts.net` and Tailscale-preferred search-domain queries use the embedded Tailscale DNS resolver.
+- Russian/local/Tailscale-control names use the local resolver.
+- Everything else uses Google DoH through the main `proxy` outbound.
+- Traffic routing still follows `routing.json`; using remote DNS for a domain does not force that traffic through the proxy.
+
+The Tailscale DNS server references endpoint tag `route-0`. Throne generates this tag for the first routed custom outbound. The routing profile intentionally keeps `Tailscale` as the first and only custom routed outbound, so `route-0` is stable in the current design. If another named outbound is later added ahead of Tailscale, update the endpoint tag in `dns.json` to match Throne's generated Tailscale endpoint tag.
 
 With `accept_search_domain` enabled, names such as `gb` can be expanded against the tailnet's MagicDNS search domain without installing the separate Windows Tailscale client.
 
