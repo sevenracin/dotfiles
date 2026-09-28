@@ -22,29 +22,31 @@ The profile is intentionally **proxy by default**. Unknown and niche services st
 
 Rule priority:
 
-1. Tailscale address space and `*.ts.net` MagicDNS names use the local `Tailscale` outbound before Throne's generic DNS hijack can match them. Quad100 (`100.100.100.100` / `fd7a:115c:a1e0::53`) is explicitly covered so MagicDNS resolution stays inside Tailscale.
-2. Other DNS is hijacked into Throne's configured DNS path.
+1. Tailscale peer address space (`100.64.0.0/10` and `fd7a:115c:a1e0::/48`) and full `*.ts.net` destinations use the local Throne profile named `Tailscale`.
+2. Throne injects its DNS hijack rule automatically for structured routing profiles; the remote route does not duplicate it.
 3. `assettolab.ru`, `steamwebhelper.exe`, international AI services, YouTube, and Apple Intelligence / Private Cloud Compute are forced to `proxy` before broader direct categories can match them.
-4. Tailscale processes, Java/Minecraft, and Steam/Epic/Rockstar install paths use `direct`.
-5. Broad SagerNet categories for Google, Apple, developer tooling, and games use `direct`. `category-dev` includes GitHub, GitLab, Docker, package managers, programming-language ecosystems, JetBrains, Microsoft developer infrastructure, container tooling and many other development services.
+4. Java/Minecraft and Steam/Epic/Rockstar install paths use `direct`.
+5. Broad built-in Throne rule sets for Google, Apple, developer tooling, and games use `direct`.
 6. Local/private ranges, Russian domains, `geoip-ru`, `geosite-category-ru`, and FunPay use `direct`.
 7. Everything unmatched uses the profile's default `proxy` outbound.
 
-AI routing uses SagerNet's maintained `geosite-category-ai-!cn.srs` aggregate instead of separate provider lists. It covers OpenAI, Anthropic, GitHub Copilot, Google DeepMind/Gemini, JetBrains AI, Perplexity, xAI, Cursor, Hugging Face, Groq, OpenRouter, Midjourney, Poe and many other international AI services.
+The profile uses Throne's built-in rule-set names rather than raw `.srs` URLs. This lets Throne resolve and cache the current rule-set URLs itself and avoids duplicate generated remote-rule-set tags.
+
+AI routing uses the built-in `geosite-category-ai-!cn` aggregate. It covers OpenAI, Anthropic, GitHub Copilot, Google DeepMind/Gemini, JetBrains AI, Perplexity, xAI, Cursor, Hugging Face, Groq, OpenRouter, Midjourney, Poe and many other international AI services.
 
 Generic shared CDN/cloud networks such as Cloudflare, Fastly, Akamai and AWS/CloudFront are deliberately not routed `direct` as whole networks because blocked and niche services share them.
 
-## MagicDNS
+## Tailscale
 
-Tailscale MagicDNS device names such as `desktop` normally expand through the Tailscale search domain to a full name such as `desktop.<tailnet>.ts.net`. Tailscale's local resolver at `100.100.100.100` answers those names. The route profile sends both `*.ts.net` traffic and Tailscale address space through the `Tailscale` outbound, so short MagicDNS names and full `*.ts.net` names can resolve and connect while Throne is active.
+A local Throne Tailscale profile named exactly `Tailscale` must exist. The routing profile uses that Throne endpoint directly; a separate Windows Tailscale installation is not required for peer-IP routing.
 
-MagicDNS must still be enabled for the tailnet and accepted by the local Tailscale client for short, unqualified names to work.
+The remote route covers Tailscale peer IPs and full `*.ts.net` destinations. In Throne 1.3.0, however, a Tailscale profile used only as an auxiliary routing outbound does **not** cause Throne to create its `dns-tailscale` DNS server. Throne currently creates that DNS server only when the selected main profile itself is Tailscale.
+
+Therefore short MagicDNS names such as `gb` cannot be provided by this remote routing JSON alone when the main profile is an Auto Selector. Short-name MagicDNS requires additional local Throne DNS configuration that connects DNS resolution to the Tailscale endpoint. This is separate from traffic routing.
 
 ## Notes
 
-The profile references an outbound named `Tailscale`. That profile must exist locally in Throne for the Tailscale rule to use it.
-
-DNS server selection is a separate Throne setting and is not stored in this remote routing profile. The profile only contains the DNS hijack routing rule.
+DNS server selection is a separate Throne setting and is not stored in this remote routing profile.
 
 Torrents are intentionally not handled by this profile because they already bypass the Throne TUN in the local setup.
 
