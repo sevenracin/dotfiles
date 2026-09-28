@@ -22,8 +22,8 @@ The profile is intentionally **proxy by default**. Unknown and niche services st
 
 Rule priority:
 
-1. Tailscale address space from the TUN inbound uses the local `Tailscale` outbound.
-2. DNS is hijacked into Throne's configured DNS path.
+1. Tailscale address space and `*.ts.net` MagicDNS names use the local `Tailscale` outbound before Throne's generic DNS hijack can match them. Quad100 (`100.100.100.100` / `fd7a:115c:a1e0::53`) is explicitly covered so MagicDNS resolution stays inside Tailscale.
+2. Other DNS is hijacked into Throne's configured DNS path.
 3. `assettolab.ru`, `steamwebhelper.exe`, international AI services, YouTube, and Apple Intelligence / Private Cloud Compute are forced to `proxy` before broader direct categories can match them.
 4. Tailscale processes, Java/Minecraft, and Steam/Epic/Rockstar install paths use `direct`.
 5. Broad SagerNet categories for Google, Apple, developer tooling, and games use `direct`. `category-dev` includes GitHub, GitLab, Docker, package managers, programming-language ecosystems, JetBrains, Microsoft developer infrastructure, container tooling and many other development services.
@@ -33,6 +33,12 @@ Rule priority:
 AI routing uses SagerNet's maintained `geosite-category-ai-!cn.srs` aggregate instead of separate provider lists. It covers OpenAI, Anthropic, GitHub Copilot, Google DeepMind/Gemini, JetBrains AI, Perplexity, xAI, Cursor, Hugging Face, Groq, OpenRouter, Midjourney, Poe and many other international AI services.
 
 Generic shared CDN/cloud networks such as Cloudflare, Fastly, Akamai and AWS/CloudFront are deliberately not routed `direct` as whole networks because blocked and niche services share them.
+
+## MagicDNS
+
+Tailscale MagicDNS device names such as `desktop` normally expand through the Tailscale search domain to a full name such as `desktop.<tailnet>.ts.net`. Tailscale's local resolver at `100.100.100.100` answers those names. The route profile sends both `*.ts.net` traffic and Tailscale address space through the `Tailscale` outbound, so short MagicDNS names and full `*.ts.net` names can resolve and connect while Throne is active.
+
+MagicDNS must still be enabled for the tailnet and accepted by the local Tailscale client for short, unqualified names to work.
 
 ## Notes
 
