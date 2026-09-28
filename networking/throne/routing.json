@@ -8,23 +8,12 @@
       "domain_suffix": [
         "ts.net"
       ],
-      "inbound": [
-        "tun-in"
-      ],
       "ip_cidr": [
         "100.64.0.0/10",
-        "100.100.100.100/32",
-        "fd7a:115c:a1e0::/48",
-        "fd7a:115c:a1e0::53/128"
+        "fd7a:115c:a1e0::/48"
       ],
-      "name": "Tailscale and MagicDNS",
+      "name": "Tailscale",
       "outbound": "Tailscale",
-      "type": "custom"
-    },
-    {
-      "action": "hijack-dns",
-      "name": "DNS hijack",
-      "protocol": "dns",
       "type": "custom"
     },
     {
@@ -55,17 +44,6 @@
     },
     {
       "action": "route",
-      "name": "Tailscale processes direct",
-      "outbound": "direct",
-      "process_name": [
-        "tailscale.exe",
-        "tailscaled.exe",
-        "tailscale-ipn.exe"
-      ],
-      "type": "simple_process_name_bypass"
-    },
-    {
-      "action": "route",
       "name": "Java direct",
       "outbound": "direct",
       "process_name": [
@@ -88,7 +66,7 @@
       "name": "International AI services proxy",
       "outbound": "proxy",
       "rule_set": [
-        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ai-!cn.srs"
+        "geosite-category-ai-!cn"
       ],
       "type": "simple_address_proxy"
     },
@@ -97,7 +75,7 @@
       "name": "YouTube proxy",
       "outbound": "proxy",
       "rule_set": [
-        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-youtube.srs"
+        "geosite-youtube"
       ],
       "type": "simple_address_proxy"
     },
@@ -118,10 +96,10 @@
       "name": "Broad native direct categories",
       "outbound": "direct",
       "rule_set": [
-        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-google.srs",
-        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-apple.srs",
-        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-dev.srs",
-        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-games.srs"
+        "geosite-google",
+        "geosite-apple",
+        "geosite-category-dev",
+        "geosite-category-games"
       ],
       "type": "simple_address_bypass"
     },
@@ -152,7 +130,7 @@
       "outbound": "direct",
       "rule_set": [
         "geoip-ru",
-        "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ru.srs"
+        "geosite-category-ru"
       ],
       "type": "simple_address_bypass"
     }
