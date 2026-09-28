@@ -40,13 +40,35 @@ Generic shared CDN/cloud networks such as Cloudflare, Fastly, Akamai and AWS/Clo
 
 A local Throne Tailscale profile named exactly `Tailscale` must exist. The routing profile uses that Throne endpoint directly; a separate Windows Tailscale installation is not required for peer-IP routing.
 
-The remote route covers Tailscale peer IPs and full `*.ts.net` destinations. In Throne 1.3.0, however, a Tailscale profile used only as an auxiliary routing outbound does **not** cause Throne to create its `dns-tailscale` DNS server. Throne currently creates that DNS server only when the selected main profile itself is Tailscale.
+The remote route covers Tailscale peer IPs and full `*.ts.net` destinations.
 
-Therefore short MagicDNS names such as `gb` cannot be provided by this remote routing JSON alone when the main profile is an Auto Selector. Short-name MagicDNS requires additional local Throne DNS configuration that connects DNS resolution to the Tailscale endpoint. This is separate from traffic routing.
+### MagicDNS
+
+Throne 1.3.0 only auto-generates its Tailscale DNS server when Tailscale is the selected main profile. In this setup the main profile is the Auto Selector and Tailscale is an auxiliary routed endpoint, so short MagicDNS names need a local custom DNS object.
+
+The matching object is stored in [`dns.json`](dns.json).
+
+In **Routing → DNS**:
+
+1. Enable **Use Custom DNS Object**.
+2. Open **Edit DNS Object**.
+3. Paste the contents of `dns.json`.
+4. Save and restart the active profile.
+
+The custom DNS object keeps the existing routing philosophy:
+
+- Tailscale MagicDNS and single-label tailnet names use the embedded Tailscale resolver.
+- International AI, YouTube, Apple Intelligence and `assettolab.ru` use Google DoH through `proxy`.
+- Broad DIRECT categories and Russian domains use the local resolver.
+- Everything else uses Google DoH through `proxy`.
+
+The Tailscale DNS server references endpoint tag `route-0`. Throne generates this tag for the first routed auxiliary outbound. The routing profile intentionally keeps `Tailscale` as the first and only custom routed outbound, so `route-0` is stable in the current design. If another named outbound is later added ahead of Tailscale, update the endpoint tag in `dns.json` to match Throne's generated Tailscale endpoint tag.
+
+With `accept_search_domain` enabled, names such as `gb` can be expanded against the tailnet's MagicDNS search domain without installing the separate Windows Tailscale client.
 
 ## Notes
 
-DNS server selection is a separate Throne setting and is not stored in this remote routing profile.
+`routing.json` is remotely managed. `dns.json` is a local Throne DNS object and must currently be pasted into Throne manually; it is not imported by the remote route profile.
 
 Torrents are intentionally not handled by this profile because they already bypass the Throne TUN in the local setup.
 
