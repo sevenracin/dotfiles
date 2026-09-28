@@ -10,20 +10,22 @@ Add this URL to Shadowrocket as a remote configuration. The config contains the 
 
 ## Routing policy
 
-The profile is intentionally **PROXY by default**. Unknown and niche services therefore work without maintaining a complete censorship list, while high-confidence traffic is routed directly for speed.
+The profile is intentionally **PROXY by default**. Unknown and niche services therefore keep working without maintaining a complete censorship list, while broad high-confidence categories bypass the VPN for native speed.
 
 Rule order is important:
 
 1. LAN and Tailscale are `DIRECT`.
 2. Advertising is rejected.
-3. Narrow exceptions that need a foreign IP are `PROXY` before any broad direct family can match them. This includes Gemini, YouTube, GitHub/Microsoft Copilot, the maintained custom proxy list, `assettolab.ru`, and Apple Intelligence / Private Cloud Compute endpoints.
-4. Apple, Google core services, and GitHub core services are `DIRECT` through maintained Blackmatrix7 rule sets.
+3. Narrow foreign-IP exceptions are `PROXY` before broad direct categories can match them. This includes OpenAI, Gemini, YouTube, GitHub/Microsoft Copilot, `assettolab.ru`, Medium, JetBrains AI/Grazie, the maintained custom proxy list, and Apple Intelligence / Private Cloud Compute endpoints.
+4. Broad maintained Blackmatrix7 sets for Apple, Google, GitHub, Developer tooling, and Games are `DIRECT`.
 5. `.ru`, `.su`, `.рф`, FunPay, and `GEOIP,RU` are `DIRECT`.
 6. Everything unmatched is `PROXY`.
 
-OpenAI/ChatGPT, Claude, Grok/xAI, Perplexity, Microsoft AI, and other AI/niche services that are not part of a broad DIRECT family intentionally fall through to the default proxy. This avoids unnecessary extra rule sets while preserving access.
+The Developer aggregate covers many ecosystems at once, including GitLab, Docker, Python, package/container tooling, JetBrains-related infrastructure, Stack Overflow and other development services. OpenAI and Medium are explicitly caught before this aggregate because they should not use the Russian route.
 
-Generic shared CDN networks such as Cloudflare, Fastly, Akamai, AWS/CloudFront, and similar infrastructure are deliberately not routed DIRECT as a whole because blocked and niche services share them.
+The Game aggregate covers a large cross-vendor set rather than maintaining individual rules for each publisher/platform.
+
+Generic shared CDN/cloud networks such as Cloudflare, Fastly, Akamai and AWS/CloudFront are deliberately not routed `DIRECT` as whole networks because blocked and niche services share them.
 
 The config intentionally keeps:
 
