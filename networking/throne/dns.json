@@ -21,50 +21,24 @@
   ],
   "rules": [
     {
-      "preferred_by": "tailscale-dns",
+      "domain_suffix": [
+        "ts.net"
+      ],
       "action": "route",
       "server": "tailscale-dns"
     },
     {
-      "rule_set": [
-        "geosite-category-ai-!cn",
-        "geosite-youtube"
+      "preferred_by": [
+        "tailscale-dns"
       ],
       "action": "route",
-      "server": "remote-dns"
-    },
-    {
-      "domain": [
-        "apple-relay.cloudflare.com",
-        "apple-relay.fastly-edge.com",
-        "cp4.cloudflare.com",
-        "apple-relay.apple.com"
-      ],
-      "action": "route",
-      "server": "remote-dns"
-    },
-    {
-      "domain_suffix": [
-        "assettolab.ru"
-      ],
-      "action": "route",
-      "server": "remote-dns"
-    },
-    {
-      "rule_set": [
-        "geosite-google",
-        "geosite-apple",
-        "geosite-category-dev",
-        "geosite-category-games",
-        "geosite-category-ru"
-      ],
-      "action": "route",
-      "server": "direct-dns"
+      "server": "tailscale-dns"
     },
     {
       "domain_suffix": [
         "tailscale.com",
         "tailscale.net",
+        "tailscale.io",
         ".local",
         ".ru",
         ".su",
