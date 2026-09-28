@@ -14,7 +14,7 @@ Use this once to add the GitHub-hosted route as a remote routing profile:
 
 throne://remoteroute/aHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL3NldmVucmFjaW4vZG90ZmlsZXMvbWFpbi9uZXR3b3JraW5nL3Rocm9uZS9yb3V0aW5nLmpzb24jUm91dGluZw
 
-When Throne asks, keep `Auto update` enabled.
+When Throne asks, keep `Auto update` enabled. In **Routing → Common**, use **GitHub** for **Remote Rule-set Mirror** so remote route updates do not get an older cached copy from a CDN mirror.
 
 ## Routing policy
 
@@ -22,7 +22,7 @@ The profile is intentionally **proxy by default**. Unknown and niche services st
 
 Rule priority:
 
-1. Tailscale peer address space (`100.64.0.0/10` and `fd7a:115c:a1e0::/48`) and full `*.ts.net` destinations use the local Throne profile named `Tailscale`.
+1. Tailscale peer address space (`100.64.0.0/10` and `fd7a:115c:a1e0::/48`) and `*.ts.net` destinations use the local Throne profile named `Tailscale`.
 2. Throne injects its DNS hijack rule automatically for structured routing profiles; the remote route does not duplicate it.
 3. `assettolab.ru`, `steamwebhelper.exe`, international AI services, YouTube, and Apple Intelligence / Private Cloud Compute are forced to `proxy` before broader direct categories can match them.
 4. Java/Minecraft and Steam/Epic/Rockstar install paths use `direct`.
@@ -40,45 +40,28 @@ Generic shared CDN/cloud networks such as Cloudflare, Fastly, Akamai and AWS/Clo
 
 A local Throne Tailscale profile named exactly `Tailscale` must exist. The routing profile uses that Throne endpoint directly; a separate Windows Tailscale installation is not required for peer-IP routing.
 
-The remote route covers Tailscale peer IPs and full `*.ts.net` destinations.
+Peer traffic to Tailscale addresses is routed through that profile. Use a peer's `100.x.x.x` address to verify the Tailscale path independently of DNS.
 
-### MagicDNS
+### MagicDNS limitation in Throne 1.3.0
 
-Throne 1.3.0 only auto-generates its Tailscale DNS server when Tailscale is the selected main profile. In this setup the main profile is the Auto Selector and Tailscale is an auxiliary routed endpoint, so short MagicDNS names need a local custom DNS object.
+Do **not** use a custom Tailscale DNS server that references `route-0` in this setup. Throne can build the routed Tailscale profile for traffic, but sing-box fails during DNS initialization when a custom Tailscale DNS server tries to bind to that routed endpoint (`endpoint not found: route-0`).
 
-The matching object is stored in [`dns.json`](dns.json).
+Throne only wires its generated Tailscale DNS server automatically when Tailscale itself is the selected main profile. With the normal Auto Selector as the main profile and Tailscale used only as a routed outbound, short MagicDNS names such as `gb` are therefore not currently available through Throne alone.
 
-In **Routing → DNS**:
+For the stable configuration:
 
-1. Enable **Use Custom DNS Object**.
-2. Open **Edit DNS Object**.
-3. Paste the contents of `dns.json`.
-4. Save and restart the active profile.
+- leave **Use Custom DNS Object** disabled and let Throne generate DNS from the normal DNS settings; or
+- if a custom object is required for another reason, [`dns.json`](dns.json) is a startup-safe object without the unsupported Tailscale endpoint binding.
 
-The custom DNS object is intentionally simple and does not reference Throne rule-set aliases. Raw custom DNS objects are parsed directly by sing-box, so routing-profile aliases such as `geosite-category-ai-!cn` are not resolved there.
-
-DNS behavior:
-
-- `*.ts.net` and Tailscale-preferred search-domain queries use the embedded Tailscale DNS resolver.
-- Russian/local/Tailscale-control names use the local resolver.
-- Everything else uses Google DoH through the main `proxy` outbound.
-- Traffic routing still follows `routing.json`; using remote DNS for a domain does not force that traffic through the proxy.
-
-The DNS object deliberately uses Throne's generated DNS tag names `dns-direct`, `dns-remote`, and `dns-tailscale`. Throne's generated route always references `dns-direct` as its default domain resolver, so renaming that tag breaks profile startup.
-
-The Tailscale DNS server references endpoint tag `route-0`. Throne generates this tag for the first routed custom outbound. The routing profile intentionally keeps `Tailscale` as the first and only custom routed outbound, so `route-0` is stable in the current design. If another named outbound is later added ahead of Tailscale, update the endpoint tag in `dns.json` to match Throne's generated Tailscale endpoint tag.
-
-With `accept_search_domain` enabled, names such as `gb` can be expanded against the tailnet's MagicDNS search domain without installing the separate Windows Tailscale client.
+This means `ssh 100.x.x.x` can work through the routed Tailscale profile, while `ssh gb` requires either future Throne support for auxiliary Tailscale DNS, making Tailscale the main selected profile, or a separate Tailscale client that provides MagicDNS to Windows.
 
 ## Resetting an old local route
 
 Older revisions of this profile used raw SagerNet `.srs` URLs. Throne turns those URLs into hashed tags such as `geosite-category-ai-!cn-srs-...`. If Throne reports a duplicate tag with that old hashed form, the local `Routing` profile is stale; the current `routing.json` does not contain raw `.srs` URLs.
 
-First stop the active profile and press **Fetch** in the remote `Routing` profile. The AI rule should display `geosite-category-ai-!cn`, not a `raw.githubusercontent.com/...srs` URL. If the duplicate-tag error remains, delete only the local **Routing route profile** and re-add it from the install link above. Do not delete the Infrastructure `Tailscale` profile; it is separate and the freshly imported route will bind to it by the name `Tailscale`.
+Set **Remote Rule-set Mirror** to **GitHub**, stop the active profile, and press **Fetch** in the remote `Routing` profile. The AI rule should display `geosite-category-ai-!cn`, not a `raw.githubusercontent.com/...srs` URL. If the duplicate-tag error remains, delete only the local **Routing route profile** and re-add it from the install link above. Do not delete the Infrastructure `Tailscale` profile.
 
 ## Notes
-
-`routing.json` is remotely managed. `dns.json` is a local Throne DNS object and must currently be pasted into Throne manually; it is not imported by the remote route profile.
 
 Torrents are intentionally not handled by this profile because they already bypass the Throne TUN in the local setup.
 
