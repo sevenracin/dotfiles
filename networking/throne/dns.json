@@ -1,13 +1,6 @@
 {
   "servers": [
     {
-      "type": "tailscale",
-      "tag": "dns-tailscale",
-      "endpoint": "route-0",
-      "accept_default_resolvers": false,
-      "accept_search_domain": true
-    },
-    {
       "type": "local",
       "tag": "dns-direct"
     },
@@ -20,20 +13,6 @@
     }
   ],
   "rules": [
-    {
-      "domain_suffix": [
-        "ts.net"
-      ],
-      "action": "route",
-      "server": "dns-tailscale"
-    },
-    {
-      "preferred_by": [
-        "dns-tailscale"
-      ],
-      "action": "route",
-      "server": "dns-tailscale"
-    },
     {
       "domain_suffix": [
         "tailscale.com",
