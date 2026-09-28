@@ -64,9 +64,17 @@ DNS behavior:
 - Everything else uses Google DoH through the main `proxy` outbound.
 - Traffic routing still follows `routing.json`; using remote DNS for a domain does not force that traffic through the proxy.
 
+The DNS object deliberately uses Throne's generated DNS tag names `dns-direct`, `dns-remote`, and `dns-tailscale`. Throne's generated route always references `dns-direct` as its default domain resolver, so renaming that tag breaks profile startup.
+
 The Tailscale DNS server references endpoint tag `route-0`. Throne generates this tag for the first routed custom outbound. The routing profile intentionally keeps `Tailscale` as the first and only custom routed outbound, so `route-0` is stable in the current design. If another named outbound is later added ahead of Tailscale, update the endpoint tag in `dns.json` to match Throne's generated Tailscale endpoint tag.
 
 With `accept_search_domain` enabled, names such as `gb` can be expanded against the tailnet's MagicDNS search domain without installing the separate Windows Tailscale client.
+
+## Resetting an old local route
+
+Older revisions of this profile used raw SagerNet `.srs` URLs. Throne turns those URLs into hashed tags such as `geosite-category-ai-!cn-srs-...`. If Throne reports a duplicate tag with that old hashed form, the local `Routing` profile is stale; the current `routing.json` does not contain raw `.srs` URLs.
+
+First stop the active profile and press **Fetch** in the remote `Routing` profile. The AI rule should display `geosite-category-ai-!cn`, not a `raw.githubusercontent.com/...srs` URL. If the duplicate-tag error remains, delete only the local **Routing route profile** and re-add it from the install link above. Do not delete the Infrastructure `Tailscale` profile; it is separate and the freshly imported route will bind to it by the name `Tailscale`.
 
 ## Notes
 
