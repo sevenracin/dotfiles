@@ -10,29 +10,48 @@ Add this URL to Shadowrocket as a remote configuration. The config contains the 
 
 ## Routing policy
 
-The profile is intentionally **proxy by default** for unknown and niche services, but known-safe traffic is routed `DIRECT` for native speed.
+The profile is intentionally **proxy by default** for unknown and niche services, while known-safe traffic is routed `DIRECT` for native speed.
 
-Proxied traffic now uses the `FAST-EU` `url-test` group instead of Shadowrocket's plain `PROXY` policy. The group automatically tests nearby EU nodes every 5 minutes and picks the lowest-latency available match with a 20 ms switching tolerance. It currently matches Finland, Estonia, Latvia, Lithuania, Poland, Sweden, Germany, the Netherlands, Czechia, Denmark, and Austria, using country names, common city names, Russian names, and flags. Special nodes labelled `МОСТ`, `ТОРРЕНТ`, or M-number variants are excluded.
+The design is deliberately small: explicit proxy rules are only kept when they override a later `DIRECT` family or `GEOIP,RU`. Services that would already fall through to `FINAL,FAST-EU` do not get redundant rule sets.
 
-All protocols exposed by matching subscription nodes participate. Shadowrocket `url-test` measures request latency/availability rather than sustained download throughput, so the configuration intentionally does not hard-code a preferred protocol. A fast Hysteria2/TUIC/VLESS/etc. node can win naturally if it performs best on the current connection.
+### Proxy selection
 
-Rule order is important:
+`FAST-EU` is a stability-first `url-test` group. It tests a small nearby-EU pool every 30 minutes with a 3 second timeout and a 50 ms switching tolerance. The current pool covers Finland, Poland, Sweden, Germany, the Netherlands, and Denmark. Russian/Moscow-labelled and special-purpose nodes are explicitly excluded even if their names also contain an EU label.
+
+All matching protocols may compete. Shadowrocket `url-test` measures request latency/availability, not sustained throughput, so protocol type is not hard-coded.
+
+### DNS
+
+DIRECT traffic uses the system resolver. Proxied traffic uses one direct Cloudflare DoH resolver with Google DoH and the system resolver as fallbacks.
+
+DNS is intentionally **not sent through `#proxy`**. Shadowrocket's `#proxy` DNS syntax uses the current default proxy node, which can make DNS reliability independent from the node selected by `FAST-EU`. Keeping DNS outside the proxy path avoids that extra failure point.
+
+Apple/iCloud/App Store hostnames are also explicitly resolved with the system resolver.
+
+### Rule order
 
 1. LAN and Tailscale are `DIRECT`.
-2. Advertising is rejected.
-3. Narrow exceptions that need a foreign IP use `FAST-EU` before any broad direct category can match them. This includes OpenAI, Gemini, YouTube, GitHub/Microsoft Copilot, Medium, JetBrains AI/Grazie, the maintained custom proxy list, `assettolab.ru`, and Apple Intelligence / Private Cloud Compute endpoints.
-4. Apple, Google, GitHub, Developer, and Game aggregate families are `DIRECT` through maintained Blackmatrix7 rule sets.
+2. Narrow exceptions that would otherwise be caught by a later direct rule or Russian GEOIP use `FAST-EU` first. This includes OpenAI, Gemini, GitHub Copilot, Discord, Medium, JetBrains AI/Grazie, the small maintained Misha custom-proxy list, `assettolab.ru`, and Apple Intelligence / Private Cloud Compute endpoints.
+3. Apple core traffic is `DIRECT` through explicit critical suffixes plus Blackmatrix7 `Apple_Domain` and `Apple` sets.
+4. Google core, GitHub core, Developer, and Game aggregate families are `DIRECT`.
 5. `.ru`, `.su`, `.рф`, FunPay, and `GEOIP,RU` are `DIRECT`.
 6. Everything unmatched uses `FAST-EU`.
 
-Generic shared CDN networks such as Cloudflare, Fastly, Akamai, AWS/CloudFront, and similar infrastructure are deliberately not routed `DIRECT` as a whole because blocked and niche services share them.
+YouTube, Microsoft Copilot, Claude, Grok/xAI, Perplexity, and other foreign services that are not part of a broad DIRECT family intentionally fall through to the default proxy instead of carrying redundant explicit proxy lists.
+
+## Why there is no giant ad list
+
+The base routing profile intentionally does **not** load Blackmatrix7 `Advertising_Domain.list`. That file is several megabytes and currently expands to roughly 281k rules, dwarfing the rest of the routing table. Ad blocking is better kept in dedicated Shadowrocket modules/content blockers rather than making every connection traverse an enormous base routing database.
+
+## Notes
 
 The config intentionally keeps:
 
 - `udp-policy-not-supported-behaviour = DIRECT`
 - `block-quic = always-allow`
 - IPv6 disabled
-- system DNS for DIRECT traffic and DoH through the proxy for proxied traffic
+- system DNS for DIRECT traffic
+- MITM enabled, while CA private material stays local
 
 ## Private material
 
