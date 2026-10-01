@@ -39,7 +39,7 @@ Apple/iCloud/App Store hostnames are also explicitly resolved with the system re
 ### Rule order
 
 1. LAN and Tailscale are `DIRECT`.
-2. Narrow exceptions that would otherwise be caught by a later direct rule or Russian GEOIP use `FAST-EU`. This includes OpenAI, GitHub Copilot, Discord, Medium, JetBrains AI/Grazie, the small maintained Misha custom-proxy list, `assettolab.ru`, and Apple Intelligence / Private Cloud Compute endpoints.
+2. Narrow exceptions that would otherwise be caught by a later direct rule or Russian GEOIP use `FAST-EU`. This includes OpenAI, GitHub Copilot, Discord, Medium, the JetBrains family (IDE downloads, CDN, Marketplace and AI), the small maintained Misha custom-proxy list, `assettolab.ru`, and Apple Intelligence / Private Cloud Compute endpoints.
 3. Google AI uses the dedicated manual `GOOGLE-AI` group before Google core can match it.
 4. YouTube explicitly uses `FAST-EU` before Google core. This prevents the native app from being split between proxied YouTube domains and Google API/video infrastructure such as `youtubei.googleapis.com`, `googlevideo.com`, and GVT hosts.
 5. Apple core traffic is `DIRECT` through explicit critical suffixes plus Blackmatrix7 `Apple_Domain` and `Apple` sets.
