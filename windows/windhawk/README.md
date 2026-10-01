@@ -1,91 +1,30 @@
-# Windhawk configuration guide
+# Windhawk
 
-My installed Windhawk mods and their saved configurations, ordered from Start menu and taskbar customization to smaller Windows tweaks.
+Windhawk **1.7.3** · All mods enabled · Updated **2026-10-01**.
 
-## Table of contents
-
-- [Introduction](#introduction)
-- [Manual installation](#manual-installation)
-- [Installed mods](#installed-mods)
-- [Windows 11 Start Menu Styler](#windows-11-start-menu-styler)
-- [Windows 11 Taskbar Styler](#windows-11-taskbar-styler)
-- [Taskbar height and icon size](#taskbar-height-and-icon-size)
-- [Taskbar Labels for Windows 11](#taskbar-labels-for-windows-11)
-- [Remove Taskbar Window Suffixes](#remove-taskbar-window-suffixes)
-- [Win32 UI Modernizer](#win32-ui-modernizer)
-- [Invisible Window Borders](#invisible-window-borders)
-- [Modernize Folder Picker Dialog](#modernize-folder-picker-dialog)
-- [Custom Desktop Watermark](#custom-desktop-watermark)
-- [Turn off change file extension warning](#turn-off-change-file-extension-warning)
-- [References](#references)
-
-## Introduction
-
-**Snapshot:** 1 October 2026 (Europe/Moscow). **Windhawk:** 1.7.3. **Windows build recorded by Windhawk:** 10.0.26340.
-
-All 10 installed mods were enabled when this snapshot was taken. The code blocks contain all 328 saved mod settings, including empty strings, numeric toggles, regular expressions, XAML, style constants, and array entries.
-
-This file lives at `windows/windhawk/README.md`: Windows-specific configuration is grouped under `windows/`, and Windhawk has one self-contained guide.
-
-The organization follows the official [Start menu styling guide](https://github.com/ramensoftware/windows-11-start-menu-styling-guide) and [taskbar styling guide](https://github.com/ramensoftware/windows-11-taskbar-styling-guide), with a contents list, installation instructions, individual customization sections, and expandable import blocks like the official theme pages.
-
-Settings were read from the active installation’s `HKLM\SOFTWARE\Windhawk\Engine\Mods\<mod-id>\Settings` keys. Mod names and authors were checked against the installed source files, and versions and process scopes against the installed mod configuration. These blocks contain mod settings only; enabled state and process scope are listed separately in each section.
-
-## Manual installation
-
-1. Install [Windhawk](https://windhawk.net/) and open **Mods**.
-2. Install the mod linked in the relevant section. The version shown is the version installed at the time of this snapshot.
-3. Open the mod’s **Advanced** tab and find **Mod settings**.
-4. Copy the entire JSON block for that mod into the **Mod settings** text box, then click **Save**.
-5. Leave the mod enabled. If the effect does not appear immediately, reopen the affected application or restart File Explorer for Explorer/taskbar mods.
-
-The current official theme pages also support YAML through **Settings → Textual mode**. This guide uses the exact flat JSON export accepted by **Advanced → Mod settings** in the installed Windhawk version. Paste these blocks into the Advanced JSON box, using the steps above.
-
-Numeric `0` and `1` values are intentional and match the stored settings. An empty `{}` means the mod has no saved options; enabling the mod is sufficient.
-
-### Process scope
-
-The process targets and exclusions below come from each installed mod’s metadata. No custom inclusion or exclusion lists, override of the built-in lists, or critical-process pattern override were saved for any installed mod. On a fresh installation, keep the built-in process lists and leave those Advanced overrides at their defaults to reproduce this scope.
+**Import:** Install the mod → **Advanced → Mod settings** → paste JSON → **Save**.
 
 ## Installed mods
 
-| Mod | Installed version | State | Saved settings |
-| --- | --- | --- | ---: |
-| [Windows 11 Start Menu Styler](#windows-11-start-menu-styler) | 1.7 | Enabled | 132 |
-| [Windows 11 Taskbar Styler](#windows-11-taskbar-styler) | 1.10 | Enabled | 102 |
-| [Taskbar height and icon size](#taskbar-height-and-icon-size) | 1.3.10 | Enabled | 5 |
-| [Taskbar Labels for Windows 11](#taskbar-labels-for-windows-11) | 1.5 | Enabled | 17 |
-| [Remove Taskbar Window Suffixes](#remove-taskbar-window-suffixes) | 1.1.1 | Enabled | 4 |
-| [Win32 UI Modernizer](#win32-ui-modernizer) | 1.0.2 | Enabled | 62 |
-| [Invisible Window Borders](#invisible-window-borders) | 1.0.0 | Enabled | 1 |
-| [Modernize Folder Picker Dialog](#modernize-folder-picker-dialog) | 1.0.0 | Enabled | 0 |
-| [Custom Desktop Watermark](#custom-desktop-watermark) | 1.2.0 | Enabled | 5 |
-| [Turn off change file extension warning](#turn-off-change-file-extension-warning) | 1.0.1 | Enabled | 0 |
+| Mod | Version | Settings |
+| --- | --- | --- |
+| [Windows 11 Start Menu Styler](#windows-11-start-menu-styler) | 1.7 | Below |
+| [Windows 11 Taskbar Styler](#windows-11-taskbar-styler) | 1.10 | Below |
+| [Taskbar height and icon size](#taskbar-height-and-icon-size) | 1.3.10 | Below |
+| [Taskbar Labels for Windows 11](#taskbar-labels-for-windows-11) | 1.5 | Below |
+| [Remove Taskbar Window Suffixes](#remove-taskbar-window-suffixes) | 1.1.1 | Below |
+| [Win32 UI Modernizer](#win32-ui-modernizer) | 1.0.2 | Below |
+| [Invisible Window Borders](#invisible-window-borders) | 1.0.0 | Below |
+| [Modernize Folder Picker Dialog](https://windhawk.net/mods/modernize-folder-picker-dialog) | 1.0.0 | None |
+| [Custom Desktop Watermark](#custom-desktop-watermark) | 1.2.0 | Below |
+| [Turn off change file extension warning](https://windhawk.net/mods/extension-change-no-warning) | 1.0.1 | None |
 
 ## Windows 11 Start Menu Styler
 
-**Mod:** [`windows-11-start-menu-styler`](https://windhawk.net/mods/windows-11-start-menu-styler)  
-**Author:** [m417z](https://github.com/m417z)  
-**Installed version:** 1.7 · **State:** Enabled  
-**Target processes:** `StartMenuExperienceHost.exe`, `SearchHost.exe`, `SearchApp.exe`  
-**Excluded processes:** None
-
-Glass-like borders and theme-aware hover and pressed backgrounds for Start menu controls and search. The saved styles include rounded search boxes, 100 ms background transitions, pressed-icon scaling, menu entrance transitions, and a hidden Start drop shadow.
-
-**Styling reference:** [Official Start menu styling guide](https://github.com/ramensoftware/windows-11-start-menu-styling-guide).
-
-### Notes
-
-- 26 control-style targets, one web-content style target, and seven style constants are saved.
-- The export has no saved `theme` key; the configuration below preserves the actual stored custom styles rather than assigning a theme name.
-- Both `StartMenu` and `StartDocked` selectors are present. Which rules apply depends on the Start menu version on the target machine.
-
-### Configuration
+[Mod](https://windhawk.net/mods/windows-11-start-menu-styler) · **v1.7** — Glass borders, rounded search boxes, subtle hover effects, and smooth transitions.
 
 <details>
-<summary>Content to import (click to expand)</summary>
-
-Copy into <strong>Advanced → Mod settings</strong> and click <strong>Save</strong>.
+<summary>Configuration</summary>
 
 ```json
 {
@@ -228,28 +167,10 @@ Copy into <strong>Advanced → Mod settings</strong> and click <strong>Save</str
 
 ## Windows 11 Taskbar Styler
 
-**Mod:** [`windows-11-taskbar-styler`](https://windhawk.net/mods/windows-11-taskbar-styler)  
-**Author:** [m417z](https://github.com/m417z)  
-**Installed version:** 1.10 · **State:** Enabled  
-**Target processes:** `explorer.exe`  
-**Excluded processes:** None
-
-Custom acrylic styling for taskbar flyouts, menus, tooltips, task view, and snap popups, with thin translucent borders and reduced shadows. The clock uses a 13-point time label with the date hidden, and the system tray frame is set to a height of 40.
-
-**Styling reference:** [Official taskbar styling guide](https://github.com/ramensoftware/windows-11-taskbar-styling-guide).
-
-### Notes
-
-- 30 control-style targets and six style constants are saved. The theme selector is empty, so this is a custom configuration.
-- The saved rules reference `$mcr` and `$bcr`, but neither constant is defined in the saved style constants. Those references are preserved exactly; their intended corner-radius values cannot be recovered from this export.
-- `TaskbarFrameWidth=1340` is saved as a constant, but no saved style references it. It does not by itself set the taskbar width.
-
-### Configuration
+[Mod](https://windhawk.net/mods/windows-11-taskbar-styler) · **v1.10** — Acrylic flyouts and menus, thin borders, reduced shadows, and a time-only clock.
 
 <details>
-<summary>Content to import (click to expand)</summary>
-
-Copy into <strong>Advanced → Mod settings</strong> and click <strong>Save</strong>.
+<summary>Configuration</summary>
 
 ```json
 {
@@ -362,20 +283,10 @@ Copy into <strong>Advanced → Mod settings</strong> and click <strong>Save</str
 
 ## Taskbar height and icon size
 
-**Mod:** [`taskbar-icon-size`](https://windhawk.net/mods/taskbar-icon-size)  
-**Author:** [m417z](https://github.com/m417z)  
-**Installed version:** 1.3.10 · **State:** Enabled  
-**Target processes:** `explorer.exe`  
-**Excluded processes:** None
-
-Sets the taskbar height to 42, regular icons to 24, and regular taskbar button width to 38. Small icons use size 16 and button width 32.
-
-### Configuration
+[Mod](https://windhawk.net/mods/taskbar-icon-size) · **v1.3.10** — 42 px taskbar height, 24 px icons, and 38 px buttons; small icons use 16 px and 32 px buttons.
 
 <details>
-<summary>Content to import (click to expand)</summary>
-
-Copy into <strong>Advanced → Mod settings</strong> and click <strong>Save</strong>.
+<summary>Configuration</summary>
 
 ```json
 {
@@ -391,25 +302,10 @@ Copy into <strong>Advanced → Mod settings</strong> and click <strong>Save</str
 
 ## Taskbar Labels for Windows 11
 
-**Mod:** [`taskbar-labels`](https://windhawk.net/mods/taskbar-labels)  
-**Author:** [m417z](https://github.com/m417z)  
-**Installed version:** 1.5 · **State:** Enabled  
-**Target processes:** `explorer.exe`  
-**Excluded processes:** None
-
-Shows labels without combining taskbar buttons. Labels use a font size of 12, character ellipsis, and a width range of 50–176. The running indicator uses dynamic centered sizing and the progress indicator spans the full width.
-
-### Notes
-
-- The saved excluded-program entry is `excluded1.exe`. It is retained exactly even though it looks like a sample entry.
-- Single-item labels use `%name%`; grouped labels use `[%amount%] %name%`.
-
-### Configuration
+[Mod](https://windhawk.net/mods/taskbar-labels) · **v1.5** — Uncombined buttons with 12 px labels, ellipsis, and dynamic running indicators.
 
 <details>
-<summary>Content to import (click to expand)</summary>
-
-Copy into <strong>Advanced → Mod settings</strong> and click <strong>Save</strong>.
+<summary>Configuration</summary>
 
 ```json
 {
@@ -437,25 +333,10 @@ Copy into <strong>Advanced → Mod settings</strong> and click <strong>Save</str
 
 ## Remove Taskbar Window Suffixes
 
-**Mod:** [`file-explorer-remove-suffixes`](https://windhawk.net/mods/file-explorer-remove-suffixes)  
-**Author:** [m417z](https://github.com/m417z)  
-**Installed version:** 1.1.1 · **State:** Enabled  
-**Target processes:** `explorer.exe`  
-**Excluded processes:** None
-
-Removes suffixes from taskbar labels in universal mode. A custom rule also removes a leading number followed by an em dash from titles across all processes.
-
-### Notes
-
-- The empty process identifier makes the custom regex rule apply to all processes. The saved regular expression is preserved character for character.
-- This changes taskbar labels; it does not rename files or change the actual window title.
-
-### Configuration
+[Mod](https://windhawk.net/mods/file-explorer-remove-suffixes) · **v1.1.1** — Removes app suffixes and leading number/em-dash prefixes from taskbar labels.
 
 <details>
-<summary>Content to import (click to expand)</summary>
-
-Copy into <strong>Advanced → Mod settings</strong> and click <strong>Save</strong>.
+<summary>Configuration</summary>
 
 ```json
 {
@@ -470,25 +351,10 @@ Copy into <strong>Advanced → Mod settings</strong> and click <strong>Save</str
 
 ## Win32 UI Modernizer
 
-**Mod:** [`win32-ui-modernizer`](https://windhawk.net/mods/win32-ui-modernizer)  
-**Author:** [crazyboyybs](https://github.com/crazyboyybs)  
-**Installed version:** 1.0.2 · **State:** Enabled  
-**Target processes:** All processes (`*`), subject to Windhawk’s default process restrictions  
-**Excluded processes:** `dwm.exe`, `mmc.exe`, `msiexec.exe`
-
-Modernizes legacy controls, Explorer, Registry Editor, combo-box popups, and About Windows. The saved options enable dark mode, rounded controls, modern menus, animated tree arrows, accent details, and an Explorer navigation-pane pill; About Windows uses Mica.
-
-### Notes
-
-- All 62 saved settings are included, covering TreeView, General, Explorer, Regedit, Winver, ComboBoxDWM, and dark-mode exclusions.
-- The built-in process exclusions are `dwm.exe`, `mmc.exe`, and `msiexec.exe`.
-
-### Configuration
+[Mod](https://windhawk.net/mods/win32-ui-modernizer) · **v1.0.2** — Dark mode, rounded legacy controls, modern menus, Explorer accents, and Mica in About Windows.
 
 <details>
-<summary>Content to import (click to expand)</summary>
-
-Copy into <strong>Advanced → Mod settings</strong> and click <strong>Save</strong>.
+<summary>Configuration</summary>
 
 ```json
 {
@@ -561,24 +427,10 @@ Copy into <strong>Advanced → Mod settings</strong> and click <strong>Save</str
 
 ## Invisible Window Borders
 
-**Mod:** [`invisible-borders`](https://windhawk.net/mods/invisible-borders)  
-**Author:** [Bo0ii](https://github.com/Bo0ii)  
-**Installed version:** 1.0.0 · **State:** Enabled  
-**Target processes:** All processes (`*`), subject to Windhawk’s default process restrictions  
-**Excluded processes:** `devenv.exe`
-
-Makes window border colors invisible while retaining the window frame and rounded corners. The saved configuration also applies the effect to special windows such as dialogs.
-
-### Notes
-
-- `SpecialWindows` is enabled (`1`). Visual Studio (`devenv.exe`) is excluded by the mod.
-
-### Configuration
+[Mod](https://windhawk.net/mods/invisible-borders) · **v1.0.0** — Invisible borders with rounded corners, including dialogs.
 
 <details>
-<summary>Content to import (click to expand)</summary>
-
-Copy into <strong>Advanced → Mod settings</strong> and click <strong>Save</strong>.
+<summary>Configuration</summary>
 
 ```json
 {
@@ -588,53 +440,12 @@ Copy into <strong>Advanced → Mod settings</strong> and click <strong>Save</str
 
 </details>
 
-## Modernize Folder Picker Dialog
-
-**Mod:** [`modernize-folder-picker-dialog`](https://windhawk.net/mods/modernize-folder-picker-dialog)  
-**Author:** [aubymori](https://github.com/aubymori)  
-**Installed version:** 1.0.0 · **State:** Enabled  
-**Target processes:** All processes (`*`), subject to Windhawk’s default process restrictions  
-**Excluded processes:** None
-
-Replaces the classic Browse For Folder dialog with a modern folder picker.
-
-### Notes
-
-- This mod exposes no configurable settings. Install it and leave it enabled; the empty object below records its actual settings.
-
-### Configuration
-
-<details>
-<summary>Content to import (click to expand)</summary>
-
-Copy into <strong>Advanced → Mod settings</strong> and click <strong>Save</strong>.
-
-```json
-{}
-```
-
-</details>
-
 ## Custom Desktop Watermark
 
-**Mod:** [`custom-desktop-watermark`](https://windhawk.net/mods/custom-desktop-watermark)  
-**Author:** [aubymori](https://github.com/aubymori)  
-**Installed version:** 1.2.0 · **State:** Enabled  
-**Target processes:** `explorer.exe`  
-**Excluded processes:** None
-
-The first watermark line is empty, with right alignment and title, bold, and classic rendering disabled. Because the mod stops reading lines at the first empty string, this saved configuration supplies no watermark text.
-
-### Notes
-
-- An empty string ends the line list. To add an intentional blank line later, use a single space, as described by the mod author.
-
-### Configuration
+[Mod](https://windhawk.net/mods/custom-desktop-watermark) · **v1.2.0** — Empty watermark text.
 
 <details>
-<summary>Content to import (click to expand)</summary>
-
-Copy into <strong>Advanced → Mod settings</strong> and click <strong>Save</strong>.
+<summary>Configuration</summary>
 
 ```json
 {
@@ -647,39 +458,3 @@ Copy into <strong>Advanced → Mod settings</strong> and click <strong>Save</str
 ```
 
 </details>
-
-## Turn off change file extension warning
-
-**Mod:** [`extension-change-no-warning`](https://windhawk.net/mods/extension-change-no-warning)  
-**Author:** [m417z](https://github.com/m417z)  
-**Installed version:** 1.0.1 · **State:** Enabled  
-**Target processes:** `explorer.exe`  
-**Excluded processes:** None
-
-Suppresses the confirmation warning when changing a file extension through a rename.
-
-### Notes
-
-- This mod exposes no configurable settings. Install it and leave it enabled; the empty object below records its actual settings.
-
-### Configuration
-
-<details>
-<summary>Content to import (click to expand)</summary>
-
-Copy into <strong>Advanced → Mod settings</strong> and click <strong>Save</strong>.
-
-```json
-{}
-```
-
-</details>
-
-## References
-
-- [Windhawk](https://windhawk.net/)
-- [Official Windhawk mod source repository](https://github.com/ramensoftware/windhawk-mods)
-- [The Windows 11 Start menu styling guide](https://github.com/ramensoftware/windows-11-start-menu-styling-guide)
-- [The Windows 11 taskbar styling guide](https://github.com/ramensoftware/windows-11-taskbar-styling-guide)
-- [TranslucentStartMenu theme page — manual installation and import-block layout](https://github.com/ramensoftware/windows-11-start-menu-styling-guide/blob/main/Themes/TranslucentStartMenu/README.md)
-- [TranslucentTaskbar theme page — manual installation and import-block layout](https://github.com/ramensoftware/windows-11-taskbar-styling-guide/blob/main/Themes/TranslucentTaskbar/README.md)
