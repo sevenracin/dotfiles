@@ -41,12 +41,13 @@ Apple/iCloud/App Store hostnames are also explicitly resolved with the system re
 1. LAN and Tailscale are `DIRECT`.
 2. Narrow exceptions that would otherwise be caught by a later direct rule or Russian GEOIP use `FAST-EU`. This includes OpenAI, GitHub Copilot, Discord, Medium, JetBrains AI/Grazie, the small maintained Misha custom-proxy list, `assettolab.ru`, and Apple Intelligence / Private Cloud Compute endpoints.
 3. Google AI uses the dedicated manual `GOOGLE-AI` group before Google core can match it.
-4. Apple core traffic is `DIRECT` through explicit critical suffixes plus Blackmatrix7 `Apple_Domain` and `Apple` sets.
-5. Google core, GitHub core, Developer, and Game aggregate families are `DIRECT`.
-6. `.ru`, `.su`, `.рф`, FunPay, and `GEOIP,RU` are `DIRECT`.
-7. Everything unmatched uses `FAST-EU`.
+4. YouTube explicitly uses `FAST-EU` before Google core. This prevents the native app from being split between proxied YouTube domains and Google API/video infrastructure such as `youtubei.googleapis.com`, `googlevideo.com`, and GVT hosts.
+5. Apple core traffic is `DIRECT` through explicit critical suffixes plus Blackmatrix7 `Apple_Domain` and `Apple` sets.
+6. Google core, GitHub core, Developer, and Game aggregate families are `DIRECT`.
+7. `.ru`, `.su`, `.рф`, FunPay, and `GEOIP,RU` are `DIRECT`.
+8. Everything unmatched uses `FAST-EU`.
 
-YouTube, Microsoft Copilot, Claude, Grok/xAI, Perplexity, and other foreign services that are not part of a broad DIRECT family intentionally fall through to the default proxy instead of carrying redundant explicit proxy lists.
+Microsoft Copilot, Claude, Grok/xAI, Perplexity, and other foreign services that are not part of a broad DIRECT family intentionally fall through to the default proxy instead of carrying redundant explicit proxy lists.
 
 ## Why there is no giant ad list
 
