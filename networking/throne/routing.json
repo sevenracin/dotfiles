@@ -45,10 +45,10 @@
     },
     {
       "action": "route",
-      "name": "JetBrains AI proxy",
+      "name": "JetBrains proxy",
       "outbound": "proxy",
       "rule_set": [
-        "geosite-jetbrains-ai"
+        "geosite-jetbrains"
       ],
       "type": "simple_address_proxy"
     },
