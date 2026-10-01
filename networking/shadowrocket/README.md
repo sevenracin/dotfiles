@@ -20,6 +20,14 @@ The design is deliberately small: explicit proxy rules are only kept when they o
 
 All matching protocols may compete. Shadowrocket `url-test` measures request latency/availability, not sustained throughput, so protocol type is not hard-coded.
 
+`GOOGLE-AI` is deliberately different: it is a manual `select` group populated from normal non-Russian subscription nodes. Google AI has aggressive VPN/risk checks, so use one stable exit and avoid automatic node rotation. After refreshing the config, open the `GOOGLE-AI` policy group and select the specific server you want Gemini/Google AI to use.
+
+### Google AI coverage
+
+Google AI traffic is separated before the broad Google `DIRECT` rule. The local rules mirror the current upstream `google-deepmind` service family and cover Gemini, DeepMind, Generative Language API, AI Studio, NotebookLM, Jules, Google AI Labs/Flow, Gemini Code Assist, Android Studio Gemini, Opal, Antigravity, and Stitch.
+
+The older Blackmatrix7 `Gemini.list` is not used for this group because it is much smaller and misses several newer Google AI products.
+
 ### DNS
 
 DIRECT traffic uses the system resolver. Proxied traffic uses one direct Cloudflare DoH resolver with Google DoH and the system resolver as fallbacks.
@@ -31,17 +39,18 @@ Apple/iCloud/App Store hostnames are also explicitly resolved with the system re
 ### Rule order
 
 1. LAN and Tailscale are `DIRECT`.
-2. Narrow exceptions that would otherwise be caught by a later direct rule or Russian GEOIP use `FAST-EU` first. This includes OpenAI, Gemini, GitHub Copilot, Discord, Medium, JetBrains AI/Grazie, the small maintained Misha custom-proxy list, `assettolab.ru`, and Apple Intelligence / Private Cloud Compute endpoints.
-3. Apple core traffic is `DIRECT` through explicit critical suffixes plus Blackmatrix7 `Apple_Domain` and `Apple` sets.
-4. Google core, GitHub core, Developer, and Game aggregate families are `DIRECT`.
-5. `.ru`, `.su`, `.рф`, FunPay, and `GEOIP,RU` are `DIRECT`.
-6. Everything unmatched uses `FAST-EU`.
+2. Narrow exceptions that would otherwise be caught by a later direct rule or Russian GEOIP use `FAST-EU`. This includes OpenAI, GitHub Copilot, Discord, Medium, JetBrains AI/Grazie, the small maintained Misha custom-proxy list, `assettolab.ru`, and Apple Intelligence / Private Cloud Compute endpoints.
+3. Google AI uses the dedicated manual `GOOGLE-AI` group before Google core can match it.
+4. Apple core traffic is `DIRECT` through explicit critical suffixes plus Blackmatrix7 `Apple_Domain` and `Apple` sets.
+5. Google core, GitHub core, Developer, and Game aggregate families are `DIRECT`.
+6. `.ru`, `.su`, `.рф`, FunPay, and `GEOIP,RU` are `DIRECT`.
+7. Everything unmatched uses `FAST-EU`.
 
 YouTube, Microsoft Copilot, Claude, Grok/xAI, Perplexity, and other foreign services that are not part of a broad DIRECT family intentionally fall through to the default proxy instead of carrying redundant explicit proxy lists.
 
 ## Why there is no giant ad list
 
-The base routing profile intentionally does **not** load Blackmatrix7 `Advertising_Domain.list`. That file is several megabytes and currently expands to roughly 281k rules, dwarfing the rest of the routing table. Ad blocking is better kept in dedicated Shadowrocket modules/content blockers rather than making every connection traverse an enormous base routing database.
+The base routing profile intentionally does **not** load Blackmatrix7 `Advertising_Domain.list`. That file is several megabytes and expands to hundreds of thousands of rules, dwarfing the rest of the routing table. Ad blocking is better kept in dedicated Shadowrocket modules/content blockers rather than making every connection traverse an enormous base routing database.
 
 ## Notes
 
