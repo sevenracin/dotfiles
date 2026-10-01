@@ -26,12 +26,52 @@
       "type": "simple_address_proxy"
     },
     {
-      "action": "reject",
-      "name": "Advertising block",
+      "action": "route",
+      "name": "Google AI",
+      "outbound": "Google AI",
       "rule_set": [
-        "geosite-category-ads-all"
+        "geosite-google-deepmind"
       ],
-      "type": "simple_address_block"
+      "type": "custom"
+    },
+    {
+      "action": "route",
+      "name": "GitHub Copilot proxy",
+      "outbound": "proxy",
+      "rule_set": [
+        "geosite-github-copilot"
+      ],
+      "type": "simple_address_proxy"
+    },
+    {
+      "action": "route",
+      "name": "JetBrains AI proxy",
+      "outbound": "proxy",
+      "rule_set": [
+        "geosite-jetbrains-ai"
+      ],
+      "type": "simple_address_proxy"
+    },
+    {
+      "action": "route",
+      "name": "YouTube proxy",
+      "outbound": "proxy",
+      "rule_set": [
+        "geosite-youtube"
+      ],
+      "type": "simple_address_proxy"
+    },
+    {
+      "action": "route",
+      "domain": [
+        "apple-relay.cloudflare.com",
+        "apple-relay.fastly-edge.com",
+        "cp4.cloudflare.com",
+        "apple-relay.apple.com"
+      ],
+      "name": "Apple Intelligence proxy",
+      "outbound": "proxy",
+      "type": "simple_address_proxy"
     },
     {
       "action": "route",
@@ -60,36 +100,6 @@
         "(?i)^[A-Z]:\\\\(?:.*\\\\)?(?:SteamLibrary|Steam|Rockstar Games|Epic Games)(?:\\\\|$)"
       ],
       "type": "custom"
-    },
-    {
-      "action": "route",
-      "name": "International AI services proxy",
-      "outbound": "proxy",
-      "rule_set": [
-        "geosite-category-ai-!cn"
-      ],
-      "type": "simple_address_proxy"
-    },
-    {
-      "action": "route",
-      "name": "YouTube proxy",
-      "outbound": "proxy",
-      "rule_set": [
-        "geosite-youtube"
-      ],
-      "type": "simple_address_proxy"
-    },
-    {
-      "action": "route",
-      "domain": [
-        "apple-relay.cloudflare.com",
-        "apple-relay.fastly-edge.com",
-        "cp4.cloudflare.com",
-        "apple-relay.apple.com"
-      ],
-      "name": "Apple Intelligence proxy",
-      "outbound": "proxy",
-      "type": "simple_address_proxy"
     },
     {
       "action": "route",
