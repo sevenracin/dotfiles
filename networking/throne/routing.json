@@ -36,8 +36,8 @@
     },
     {
       "action": "route",
-      "name": "YouTube",
-      "outbound": "YouTube",
+      "name": "YouTube Russia",
+      "outbound": "Russia",
       "rule_set": [
         "geosite-youtube"
       ],
@@ -45,13 +45,13 @@
     },
     {
       "action": "route",
-      "name": "Discord and Telegram",
-      "outbound": "Russia",
+      "name": "Discord and Telegram proxy",
+      "outbound": "proxy",
       "rule_set": [
         "geosite-discord",
         "geosite-telegram"
       ],
-      "type": "custom"
+      "type": "simple_address_proxy"
     },
     {
       "action": "route",
