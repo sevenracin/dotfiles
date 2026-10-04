@@ -36,15 +36,6 @@
     },
     {
       "action": "route",
-      "name": "YouTube Russia",
-      "outbound": "Russia",
-      "rule_set": [
-        "geosite-youtube"
-      ],
-      "type": "custom"
-    },
-    {
-      "action": "route",
       "name": "GitHub Copilot proxy",
       "outbound": "proxy",
       "rule_set": [
