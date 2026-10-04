@@ -36,6 +36,25 @@
     },
     {
       "action": "route",
+      "name": "YouTube",
+      "outbound": "YouTube",
+      "rule_set": [
+        "geosite-youtube"
+      ],
+      "type": "custom"
+    },
+    {
+      "action": "route",
+      "name": "Discord and Telegram",
+      "outbound": "Russia",
+      "rule_set": [
+        "geosite-discord",
+        "geosite-telegram"
+      ],
+      "type": "custom"
+    },
+    {
+      "action": "route",
       "name": "GitHub Copilot proxy",
       "outbound": "proxy",
       "rule_set": [
@@ -49,15 +68,6 @@
       "outbound": "proxy",
       "rule_set": [
         "geosite-jetbrains"
-      ],
-      "type": "simple_address_proxy"
-    },
-    {
-      "action": "route",
-      "name": "YouTube proxy",
-      "outbound": "proxy",
-      "rule_set": [
-        "geosite-youtube"
       ],
       "type": "simple_address_proxy"
     },
