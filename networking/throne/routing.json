@@ -36,6 +36,18 @@
     },
     {
       "action": "route",
+      "domain": [
+        "discord-attachments-uploads-prd.storage.googleapis.com"
+      ],
+      "domain_suffix": [
+        "modrinth.com"
+      ],
+      "name": "Proxy service exceptions",
+      "outbound": "proxy",
+      "type": "custom"
+    },
+    {
+      "action": "route",
       "name": "GitHub Copilot proxy",
       "outbound": "proxy",
       "rule_set": [
