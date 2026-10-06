@@ -28,9 +28,18 @@
     {
       "action": "route",
       "name": "Google AI",
-      "outbound": "Google AI",
+      "outbound": "🇫🇮 Финляндия #2",
       "rule_set": [
         "geosite-google-deepmind"
+      ],
+      "type": "custom"
+    },
+    {
+      "action": "route",
+      "name": "YouTube",
+      "outbound": "🇷🇺 Россия, Москва #3",
+      "rule_set": [
+        "geosite-youtube"
       ],
       "type": "custom"
     },
